@@ -281,8 +281,10 @@ function checkFlagged(board) {
 	return false;
 }
 
+/*
 var flagged = [];
 
 var b = new PegSolBoard();
 b.printBoard();
 solvePegSolSym(b);
+*/
