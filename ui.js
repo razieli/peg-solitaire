@@ -22,43 +22,33 @@ function drawBoard() {
 			rowElem.appendChild(holeElem);
 		}
 	}
-	document.getElementById("hole3_3").style.backgroundColor = "#000000";
+	emptyHole(document.getElementById("hole3_3"));
 }
 
 function holeClicked(element) {
-	if(!selected1 && (element.style.backgroundColor == "#000000" || element.style.backgroundColor == "rgb(0, 0, 0)")) {
+	if(!selected1 && isEmpty(element)) {
 		return;
 	}
 	if(illegalMove) {
-		var src = parseCoords(selected1.getAttribute("id"));
-		var dest = parseCoords(selected2.getAttribute("id"));
-		console.log(src[0]);
-		if(b.isEmpty(src[0], src[1])) {
-			selected1.style.backgroundColor = "#000000";
-		} else {
-			selected1.style.backgroundColor = "#00FF00";
-		}
-		if(b.isEmpty(dest[0], dest[1])) {
-			selected2.style.backgroundColor = "#000000";
-		} else {
-			selected2.style.backgroundColor = "#00FF00";
-		}
+		deselectHole(selected1);
+		unmarkIllegalDestHole(selected2);
+		
 		selected1 = false;
 		selected2 = false;
 		illegalMove = false;
 	}
 	if(!selected1) {
 		selected1 = element;
-		selected1.style.backgroundColor = "#0000FF";
+		selectHole(selected1);
 	} else {
 		if(element == selected1) {
-			element.style.backgroundColor = "#00FF00";
+			deselectHole(selected1);
 			selected1 = false;
 			return;
 		}
 		selected2 = element;
 		if(!tryMove()) {
-			selected2.style.backgroundColor = "#FF0000";
+			markIllegalDestHole(selected2);
 			illegalMove = true;
 		}
 		if(!illegalMove) {
@@ -90,13 +80,44 @@ function parseElemId(coords) {
 }
 
 function moveGraphics(src, dest) {
-	selected1.style.backgroundColor = "#000000";
-	selected2.style.backgroundColor = "#00FF00";
+	deselectHole(selected1);
+	emptyHole(selected1);
+
+	fillHole(selected2);
 	
 	var eatenCoords = b.eaten(src, dest);
 	var eatenElemId = parseElemId(eatenCoords);
 	var eatenElem = document.getElementById(eatenElemId);
-	eatenElem.style.backgroundColor = "#000000";
+	emptyHole(eatenElem);
+}
+
+function emptyHole(holeElem) {
+	holeElem.style = "";
+	holeElem.classList.add("empty");
+}
+
+function fillHole(holeElem) {
+	holeElem.classList.remove("empty");
+}
+
+function selectHole(holeElem) {
+	holeElem.classList.add("selected");
+}
+
+function deselectHole(holeElem) {
+	holeElem.classList.remove("selected");
+}
+
+function markIllegalDestHole(holeElem) {
+	holeElem.classList.add("illegal");
+}
+
+function unmarkIllegalDestHole(holeElem) {
+	holeElem.classList.remove("illegal");
+}
+
+function isEmpty(holeElem) {
+	return holeElem.classList.contains("empty");
 }
 
 var selected1 = false;

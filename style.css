@@ -7,7 +7,6 @@ html, body {
 	width: 500px;
 	height: 500px;
 	margin: auto;
-	border: 1px solid #000000;
 	border-radius: 40px;
 	box-shadow: 10px 10px 8px #888888;
 	background-color: #FFFF00;
@@ -15,7 +14,7 @@ html, body {
 
 .row {
 	height: 20px;
-	margin: 45px 32px;
+	margin: 45px 38px;
 
 }
 
@@ -23,11 +22,24 @@ html, body {
 	padding: 0 10px;
 	height: 20px;
 	margin: 20px;
-	border: 1px solid #000000;
 	border-radius: 100%;
 	background-color: #00FF00;
+	box-shadow: 3px 3px 8px #3c3c3c;
 }
 
 .inactive {
 	visibility: hidden;
+}
+
+.empty {
+	background-color: #000000;
+	box-shadow: none;
+}
+
+.selected {
+	background-color: #0000FF;
+}
+
+.illegal {
+	background-color: #FF0000;
 }
