@@ -1,8 +1,6 @@
 function drawBoard() {
 	// Board div.
-	var boardElem = document.createElement("div");
-	boardElem.setAttribute("id", "board");
-	document.body.appendChild(boardElem);
+	var boardElem = document.getElementById("board");
 	
 	// Pegs/holes.
 	for(var i = 0; i < 7; i++) {
@@ -55,6 +53,12 @@ function holeClicked(element) {
 			selected1 = false;
 			selected2 = false;
 		}
+		if(b.checkWin()) {
+			endGame(true);
+		}
+		else if(b.checkGameOver()) {
+			endGame(false);
+		}
 	}
 }
 
@@ -64,9 +68,26 @@ function tryMove() {
 	
 	if(b.move(src, dest)) {
 		moveGraphics(src, dest);
+		drawStats();
 		return true;
 	}
 	return false;
+}
+
+function endGame(win) {
+	for(var i = 0; i < 7; i++) {
+		for(var j = 0; j < 7; j ++) {
+			var holeElem = document.getElementById("hole"+i+"_"+j);
+			if(holeElem.hasAttribute("onmouseup")) {
+				holeElem.removeAttribute("onmouseup");
+			}
+		}
+	}
+	if(win) {
+		document.getElementById("game-status").innerHTML = "Congratulations, you won.";
+	} else {
+		document.getElementById("game-status").innerHTML = "Game over.";
+	}
 }
 
 function parseCoords(elemId) {
@@ -120,9 +141,23 @@ function isEmpty(holeElem) {
 	return holeElem.classList.contains("empty");
 }
 
+function updatePegStat() {
+	document.getElementById("pegs-value").innerHTML = b.pegs;
+}
+
+function updateMoveStat() {
+	document.getElementById("moves-value").innerHTML = b.moves;
+}
+
+function drawStats() {
+	updatePegStat();
+	updateMoveStat();
+}
+
 var selected1 = false;
 var selected2 = false;
 var illegalMove = false;
 
-drawBoard();
 var b = new PegSolBoard();
+drawBoard();
+drawStats();

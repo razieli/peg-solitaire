@@ -38,6 +38,7 @@ class PegSolBoard {
 					 ];
 		this.pegs = 32;
 		this.moveQueue = [];
+		this.moves = 0;
 	}
 	
 	/* Checks whether a given hole is empty */
@@ -116,6 +117,7 @@ class PegSolBoard {
 			this.board[eat[0]][eat[1]] = '0';
 			this.board[z][w] = '1';
 			this.pegs--;
+			this.moves++;
 			this.moveQueue.push(this.toString());
 			return true;
 		}
@@ -138,6 +140,21 @@ class PegSolBoard {
 			return true;
 		}
 		return false;
+	}
+	
+	/* Checks if there are no more possible moves */
+	checkGameOver() {
+		for(var i = 0; i < 7; i++) {
+			for(var j = 0; j < 7; j++) {
+					if(this.isLegalMove([i,j],[i, j + 2]) ||
+					   this.isLegalMove([i,j],[i, j - 2]) ||
+					   this.isLegalMove([i,j],[i + 2, j]) ||
+					   this.isLegalMove([i,j],[i - 2, j])) {
+						return false;
+					}
+			}
+		}
+		return true;
 	}
 	
 	/* Prints the board to the screen */
