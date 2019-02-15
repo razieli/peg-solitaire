@@ -15,7 +15,7 @@ function drawBoard() {
 			if(((i < 2 || i > 4) && (j < 2 || j > 4))) {
 				holeElem.setAttribute("class", "hole inactive");
 			} else {
-				enableInputEvents(holeElem);
+				holeElem.setAttribute("onmouseup", "holeClicked(this)");
 			}
 			rowElem.appendChild(holeElem);
 		}
@@ -79,7 +79,7 @@ function endGame(win) {
 		for(var j = 0; j < 7; j ++) {
 			var holeElem = document.getElementById("hole"+i+"_"+j);
 			if(holeElem.hasAttribute("onmouseup")) {
-				disableInputEvents(holeElem);
+				holeElem.removeAttribute("onmouseup");
 			}
 		}
 	}
@@ -152,16 +152,6 @@ function updateMoveStat() {
 function drawStats() {
 	updatePegStat();
 	updateMoveStat();
-}
-
-function enableInputEvents(holeElem) {
-	holeElem.setAttribute("onmouseup", "holeClicked(this)");
-	holeElem.setAttribute("ontouchstart", "holeClicked(this)");
-}
-
-function disableInputEvents(holeElem) {
-	holeElem.removeAttribute("onmouseup");
-	holeElem.removeAttribute("ontouchstart");
 }
 
 var selected1 = false;
