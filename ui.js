@@ -23,21 +23,6 @@ function drawBoard() {
 	emptyHole(document.getElementById("hole3_3"));
 }
 
-function holeTouched(element) {
-	if(!touchEventsFlag) {
-		for(var i = 0; i < 7; i++) {
-			for(var j = 0; j < 7; j ++) {
-				var holeElem = document.getElementById("hole"+i+"_"+j);
-				if(holeElem.hasAttribute("onmouseup")) {
-					holeElem.removeAttribute("onmouseup");
-				}
-			}
-		}
-		touchEventsFlag = true;
-	}
-	holeClicked(element);
-}
-
 function holeClicked(element) {
 	if(!selected1 && isEmpty(element)) {
 		return;
@@ -171,7 +156,7 @@ function drawStats() {
 
 function enableInputEvents(holeElem) {
 	holeElem.setAttribute("onmouseup", "holeClicked(this)");
-	holeElem.setAttribute("ontouchstart", "holeTouched(this)");
+	holeElem.setAttribute("ontouchstart", "holeClicked(this)");
 }
 
 function disableInputEvents(holeElem) {
@@ -179,7 +164,6 @@ function disableInputEvents(holeElem) {
 	holeElem.removeAttribute("ontouchstart");
 }
 
-var touchEventsFlag = false;
 var selected1 = false;
 var selected2 = false;
 var illegalMove = false;
